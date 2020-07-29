@@ -13,6 +13,7 @@
 <body>
     <div class="header"> <div class="header_logo"><a href="/" class="naver_span">Naver</a><span>책</span></div>
     <form action="/search", method="GET">
+        {% csrf_token %}
         <input type="text", placeholder="검색..", name="searching">
         <input type="submit", value="검색">
     </form>
@@ -27,7 +28,18 @@
    </div>
 <div class="search_container">
     <div> "{{searching}}" 에 대한 검색결과.</div>
-
+    {% for book in books%}
+    <ul>
+    <img src="{{book.image.url}}" alt="" class="book_image">
+    <li>{{book.name}}</li>
+    <li>{{book.author}}</li>
+    <li>{{book.genre}}</li>
+    <li>{{book.grade}}</li>
+    <li>{{book.date}}</li>
+    <li>{{book.area}}</li>
+    <li>{{book.description}}</li>
+    </ul>
+    {% endfor %}
     
 </div>
 <div class="footer">

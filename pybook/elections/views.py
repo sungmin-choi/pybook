@@ -4,12 +4,17 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
+from .models import Book
+from django.db.models import Q
+import json
 
 # Create your views here.
 
 
 def index(request):
-    return render(request, 'elections/index.html')
+    books = Book.objects.all()
+    context = {'books': books}
+    return render(request, 'elections/index.html', context)
 
 
 def login(request):
@@ -22,7 +27,11 @@ def join(request):
 
 def search(request):
     searching = request.GET.get('searching')
-    return render(request, 'elections/search.html', {'searching': searching})
+    books = Book.objects.all().filter(Q(name__contains=searching)
+                                      | Q(author__contains=searching))
+    context = {'books': books, 'searching': searching}
+    print(books)
+    return render(request, 'elections/search.html', context)
 
 
 def userDetail(request):
